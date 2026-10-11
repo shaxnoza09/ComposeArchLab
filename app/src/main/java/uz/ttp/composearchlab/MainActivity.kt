@@ -36,19 +36,36 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun NameField(
+    name: String,
+    onNameChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = name,
+        onValueChange = onNameChange,
+        label = { Text("Name") },
+        modifier = modifier
+    )
+}
+
+
+@Composable
 fun NameScreen(modifier: Modifier = Modifier) {
+    // rememberSaveable stores the value in a Bundle, which survives activity recreation on rotation; plain remember is lost.
     var name by rememberSaveable { mutableStateOf("") }
-//rememberSaveable stores the value in a Bundle, which survives activity recreation on rotation; plain remember is lost.
+
     Column(modifier.padding(24.dp)) {
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Name") }
-        )
+        NameField(name = name, onNameChange = { name = it })
         Text("Hello, $name!")
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun NameFieldPreview() {
+    NameField(name = "Amin", onNameChange = {})
+}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
